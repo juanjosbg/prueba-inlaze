@@ -6,7 +6,6 @@ const CardsMovie = ({
 }: { 
   movies: { title: string; date: string; description: string; rating: number; image: string }[] 
 }) => {
-  // Función para truncar texto
   const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
       return text.slice(0, maxLength) + "...";
@@ -23,19 +22,16 @@ const CardsMovie = ({
               src={movie.image}
               alt={movie.title}
               className="rounded-lg object-cover"
-              fill // Hace que la imagen ocupe todo el contenedor definido con `relative` y dimensiones
-              sizes="(max-width: 640px) 100vw, 25vw" // Mejora el comportamiento responsive
+              fill
+              sizes="(max-width: 640px) 100vw, 25vw"
             />
           </div>
-          <h3 className="text-left text-md font-semibold md:text-lg mb-4">{movie.title}</h3>
-          <p className="text-gray-400 text-sm mb-2">{movie.date}</p>
-          <p className="text-gray-400 text-sm mb-2">
-            {truncateText(movie.description, 100)} {/* Limitar a 100 caracteres */}
-          </p>
+          <h3 className="text-left text-md font-semibold md:text-lg">{movie.title}</h3>
+          <p className="text-gray-400 text-sm mb-2">{truncateText(movie.description, 100)}</p>
+          <p className="text-white font-semibold text-sm mb-1">{movie.date}</p>
           <div className="flex justify-between items-center">
-            <span
-              className={`sm:text-sm md:text-2md font-bold ${
-                movie.rating >= 75
+            <span className={`sm:text-sm md:text-2md font-bold 
+              ${ movie.rating >= 75
                   ? "text-green-400"
                   : movie.rating >= 50
                   ? "text-yellow-400"
