@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
     reactRoot: true,
     nextScriptWorkers: true,
     turbopack: false,
-  }
+  },
+  images: {
+    domains: ["image.tmdb.org"],
+  },
 };
 
 export default nextConfig;

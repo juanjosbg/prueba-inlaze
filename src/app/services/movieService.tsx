@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+
 const apiMovies = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL, // Base URL desde .env
   headers: {
@@ -8,6 +10,7 @@ const apiMovies = axios.create({
   },
 });
 
+// Interceptor para manejar errores
 apiMovies.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -15,6 +18,21 @@ apiMovies.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+/**
+ * Procesar los datos de las películas.
+ * @param movies - Lista de películas
+ * @returns Películas procesadas con título, fecha, calificación e imagen
+ */
+export const processMovieData = (movies: any[]) => {
+  return movies.map((movie) => ({
+    title: movie.title,
+    date: movie.release_date,
+    rating: Math.round(movie.vote_average * 10) || 0,
+    image: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : "https://via.placeholder.com/500",
+    description: movie.overview,
+  }));
+};
 
 /**
  * Fetch movies by genre ID.
@@ -26,7 +44,7 @@ export const fetchMoviesByGenre = async (genreId: number) => {
     const response = await apiMovies.get('/discover/movie', {
       params: { with_genres: genreId },
     });
-    return response.data;
+    return processMovieData(response.data.results); // Procesar datos
   } catch (error) {
     console.error('Error fetching movies by genre:', error);
     throw error;
@@ -39,9 +57,16 @@ export const fetchMoviesByGenre = async (genreId: number) => {
  */
 export const fetchMoviesByPopularity = async () => {
   try {
-    console.log('sirvee')
-    const response = await apiMovies.get('/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc');
-    return response.data;
+    const response = await apiMovies.get('/discover/movie', {
+      params: {
+        include_adult: false,
+        include_video: false,
+        language: 'en-US',
+        page: 1,
+        sort_by: 'popularity.desc',
+      },
+    });
+    return processMovieData(response.data.results); // Procesar datos
   } catch (error) {
     console.error('Error fetching popular movies:', error);
     throw error;
@@ -58,7 +83,7 @@ export const fetchMoviesByTitle = async (query: string) => {
     const response = await apiMovies.get('/search/movie', {
       params: { query },
     });
-    return response.data;
+    return processMovieData(response.data.results); // Procesar datos
   } catch (error) {
     console.error('Error fetching movies by title:', error);
     throw error;

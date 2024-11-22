@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import { fetchMoviesByGenre, fetchMoviesByPopularity, fetchMoviesByTitle } from '@/app/services/movieService';
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url); // Obtener parámetros de la URL
-  const genre = searchParams.get('genre'); // Género (opcional)
-  const title = searchParams.get('title'); // Título (opcional)
-  const popular = searchParams.get('popular'); // Popularidad (opcional)
+  const { searchParams } = new URL(request.url);
+  const genre = searchParams.get('genre');
+  const title = searchParams.get('title');
+  const popular = searchParams.get('popular');
 
   try {
     let data;
