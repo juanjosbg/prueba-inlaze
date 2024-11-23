@@ -3,7 +3,7 @@ import { db } from "@/app/utils/dbfirebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import bcrypt from "bcryptjs";
 
-function FormLog() {
+function FormLog({ onLoginSuccess }: { onLoginSuccess: () => void }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -37,12 +37,14 @@ function FormLog() {
 
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
-
       const isPasswordValid = await bcrypt.compare(formData.password, userData.password);
+
       if (isPasswordValid) {
         setMessage("Inicio de sesión exitoso.");
         console.log("Inicio de sesión exitoso:", userData.fullName);
-      } else {
+        onLoginSuccess();
+      } 
+      else {
         setMessage("Contraseña incorrecta.");
       }
     } catch (error) {
@@ -55,7 +57,7 @@ function FormLog() {
 
   return (
     <section>
-      <form className="w-full max-w-sm" onSubmit={handleSubmit}>
+      <form className="w-full max-w-sm" onSubmit={handleSubmit}> 
         <div className="mb-6">
           <label className="block text-gray-500 font-bold mb-2" htmlFor="email">
             Email
