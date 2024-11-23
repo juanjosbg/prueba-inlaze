@@ -1,10 +1,9 @@
 import React from "react";
 import Image from "next/image";
-
-const CardsMovie = ({ 
-  movies 
-}: { 
-  movies: { title: string; date: string; description: string; rating: number; image: string }[] 
+const CardsMovie = ({
+  movies
+}: {
+  movies: { title: string; date: string; description: string; rating: number; image: string }[]
 }) => {
   const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
@@ -14,36 +13,38 @@ const CardsMovie = ({
   };
 
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {movies.map((movie, index) => (
-        <div key={index} className="bg-[#303030] rounded-lg p-3 w-64 shadow-lg hover:bg-[#252525]">
-          <div className="relative w-full md:h-72 mb-4">
-            <Image
-              src={movie.image}
-              alt={movie.title}
-              className="rounded-lg object-cover"
-              fill
-              sizes="(max-width: 640px) 100vw, 25vw"
-            />
-          </div>
-          <h3 className="text-left text-md font-semibold md:text-lg">{movie.title}</h3>
-          <p className="text-gray-400 text-sm mb-2">{truncateText(movie.description, 100)}</p>
-          <p className="text-white font-semibold text-sm mb-1">{movie.date}</p>
-          <div className="flex justify-between items-center">
-            <span className={`sm:text-sm md:text-2md font-bold 
-              ${ movie.rating >= 75
+    <section>
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {movies.map((movie, index) => (
+          <div key={index} className="bg-[#303030] rounded-lg p-3 w-64 shadow-lg hover:bg-[#252525]">
+            <div className="relative w-full md:h-72 mb-4">
+              <Image
+                src={movie.image}
+                alt={movie.title}
+                className="rounded-lg object-cover"
+                fill
+                sizes="(max-width: 640px) 100vw, 25vw"
+              />
+            </div>
+            <h3 className="text-left text-md font-semibold md:text-lg">{movie.title}</h3>
+            <p className="text-gray-400 text-sm mb-2">{truncateText(movie.description, 100)}</p>
+            <p className="text-white font-semibold text-sm mb-1">{movie.date}</p>
+            <div className="flex justify-between items-center">
+              <span className={`sm:text-sm md:text-2md font-bold 
+              ${movie.rating >= 75
                   ? "text-green-400"
                   : movie.rating >= 50
-                  ? "text-yellow-400"
-                  : "text-red-400"
-              }`}
-            >
-              {movie.rating}%
-            </span>
+                    ? "text-yellow-400"
+                    : "text-red-400"
+                }`}
+              >
+                {movie.rating}%
+              </span>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </section>
   );
 };
 
