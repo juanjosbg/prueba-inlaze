@@ -16,8 +16,8 @@ const CardsMovie = ({
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {movies.map((movie, index) => (
-        <div key={index} className="bg-[#303030] rounded-lg shadow-md p-4 w-64">
-          <div className="relative w-full h-40 mb-4">
+        <div key={index} className="bg-[#303030] rounded-lg p-3 w-64 shadow-lg hover:bg-[#252525]">
+          <div className="relative w-full md:h-72 mb-4">
             <Image
               src={movie.image}
               alt={movie.title}

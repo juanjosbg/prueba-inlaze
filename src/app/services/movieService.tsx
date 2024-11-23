@@ -3,14 +3,13 @@ import axios from 'axios';
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
 const apiMovies = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // Base URL desde .env
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN_MOVIE_URL}`,
   },
 });
 
-// Interceptor para manejar errores
 apiMovies.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -1,82 +1,97 @@
 import React, { useState, useEffect } from "react";
 import CardsMovie from "./cardsMovies";
-import { fetchMoviesByPopularity } from "@/app/services/movieService";
+import { fetchMoviesByGenre, fetchMoviesByTitle, fetchMoviesByPopularity } from "@/app/services/movieService";
 
 export default function MoviesList() {
   const [movies, setMovies] = useState<any[]>([]);
   const [selectedGenre, setSelectedGenre] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const generes = [
-    "All",
-    "Adventure",
-    "Animation",
-    "Comedy",
-    "Crime",
-    "Documentary",
-    "Drama",
-    "Family",
-    "Fantasy",
-    "History",
-    "Horror",
-    "Music",
-    "Mystery",
+  const genres = [
+    { name: "All", id: null },
+    { name: "Adventure", id: 12 },
+    { name: "Animation", id: 16 },
+    { name: "Comedy", id: 35 },
+    { name: "Crime", id: 80 },
+    { name: "Documentary", id: 99 },
+    { name: "Drama", id: 18 },
+    { name: "Family", id: 10751 },
+    { name: "Fantasy", id: 14 },
+    { name: "History", id: 36 },
+    { name: "Horror", id: 27 },
+    { name: "Music", id: 10402 },
+    { name: "Mystery", id: 9648 },
   ];
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchMoviesByPopularity();
-        setMovies(data);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      } finally {
-        setLoading(false);
+  const fetchMovies = async () => {
+    setLoading(true);
+    try {
+      let data = [];
+      if (searchQuery) {
+        data = await fetchMoviesByTitle(searchQuery);
+      } else if (selectedGenre !== "All") {
+        const genre = genres.find((g) => g.name === selectedGenre);
+        if (genre?.id) {
+          data = await fetchMoviesByGenre(genre.id);
+        }
+      } else {
+        data = await fetchMoviesByPopularity();
       }
-    };
+      setMovies(data);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchMovies();
-  }, [selectedGenre]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  }, [selectedGenre, searchQuery]);
 
   return (
     <section className="flex flex-row h-screen">
       <div className="w-1/6 bg-[#262626] p-4 overflow-y-auto">
-      <div className="mt-2">
-          <label className="text-xl font-bold">Search</label>
-          <div className="bg-white dark:bg-[#262626] relative pointer-events-auto py-1 mb-7">
-            <button type="button" className="hidden w-full lg:flex items-center text-sm leading-6 text-slate-400 rounded-md ring-1 ring-slate-900/10 shadow-sm py-1.5 pl-2 pr-3 hover:ring-slate-300 dark:bg-slate-800 dark:highlight-white/5 dark:hover:bg-slate-700">
-              <svg width="24" height="24" fill="none" aria-hidden="true" className="mr-3 flex-none">
-                <path d="m19 19-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                <circle cx="11" cy="11" r="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></circle>
-              </svg>Quick search...
-              <span className="ml-auto pl-3 flex-none text-xs font-semibold">Ctrl K</span>
-            </button>
-          </div>
+        <div className="mb-4">
+          <label className="text-xl font-bold text-white">Search</label>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by title..."
+            className="w-full p-2 mt-2 rounded bg-gray-800 text-white"
+          />
         </div>
 
-        <h2 className="text-white text-xl font-bold mb-4">Generes</h2>
+        <h2 className="text-white text-xl font-bold mb-4">Genres</h2>
         <ul>
-          {generes.map((genre) => (
+          {genres.map((genre) => (
             <li
-              key={genre}
-              onClick={() => setSelectedGenre(genre)}
-              className={`cursor-pointer py-2 px-3 rounded
-                ${selectedGenre === genre ? "text-white" : "text-gray-400 hover:bg-[#181818] hover:text-white"}`}
-              >
-              {genre}
+              key={genre.name}
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedGenre(genre.name);
+              }}
+              className={`cursor-pointer py-2 px-3 rounded ${
+                selectedGenre === genre.name
+                  ? "text-white"
+                  : "text-gray-400 hover:bg-[#181818] hover:text-white"
+              }`}
+            >
+              {genre.name}
             </li>
           ))}
         </ul>
       </div>
 
       <div className="flex-1 bg-[#444444] p-6 overflow-y-auto">
-        <h2 className="text-white text-xl font-bold mb-4">Popular</h2>
-        <CardsMovie movies={movies} />
+        <h2 className="text-white text-xl font-bold mb-4">Movies</h2>
+        {loading ? (
+          <div className="text-white">Loading...</div>
+        ) : (
+          <CardsMovie movies={movies} />
+        )}
       </div>
     </section>
   );

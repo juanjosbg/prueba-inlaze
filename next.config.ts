@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     turbopack: false,
   },
   images: {
-    domains: ["image.tmdb.org"],
+    domains: ["image.tmdb.org", "via.placeholder.com"],
   },
 };
 
