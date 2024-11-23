@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { db } from "@/app/utils/dbfirebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import bcrypt from "bcryptjs";
 
 function FormRegister() {
@@ -10,6 +10,8 @@ function FormRegister() {
     email: "",
     newsletter: false,
   });
+
+  const [message, setMessage] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
@@ -21,8 +23,20 @@ function FormRegister() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setMessage(""); // Limpia el mensaje anterior
 
     try {
+      // Verificar si el correo ya existe
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("email", "==", formData.email));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        setMessage("El correo ya está registrado.");
+        return;
+      }
+
+      // Si el correo no existe, registrar el usuario
       const hashedPassword = await bcrypt.hash(formData.password, 10);
 
       const dataToSave = {
@@ -32,10 +46,11 @@ function FormRegister() {
         password: hashedPassword,
       };
 
-      const docRef = await addDoc(collection(db, "users"), dataToSave);
-      alert(`Usuario registrado con ID: ${docRef.id}`);
+      const docRef = await addDoc(usersRef, dataToSave);
+      setMessage(`Usuario registrado con ID: ${docRef.id}`);
     } catch (error) {
       console.error("Error al registrar el usuario: ", error);
+      setMessage("Ocurrió un error al registrar el usuario.");
     }
   };
 
@@ -44,7 +59,10 @@ function FormRegister() {
       <form className="w-full max-w-sm" onSubmit={handleSubmit}>
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
-            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="fullName">
+            <label
+              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              htmlFor="fullName"
+            >
               Full Name
             </label>
           </div>
@@ -60,7 +78,10 @@ function FormRegister() {
         </div>
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
-            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="email">
+            <label
+              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              htmlFor="email"
+            >
               Email
             </label>
           </div>
@@ -76,7 +97,10 @@ function FormRegister() {
         </div>
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
-            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="password">
+            <label
+              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              htmlFor="password"
+            >
               Password
             </label>
           </div>
@@ -99,13 +123,14 @@ function FormRegister() {
               checked={formData.newsletter}
               onChange={handleChange}
             />
-            <span className="text-sm">accept the terms and conditions</span>
+            <span className="text-sm">Accept the terms and conditions</span>
           </label>
         </div>
         <div className="md:flex md:items-center">
           <div className="md:w-1/3"></div>
           <div className="md:w-2/3">
-            <button className="ext-gray-400 bg-gray-800  hover:bg-gray-700 px-4 py-2 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+            <button
+              className="text-gray-400 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               type="submit"
             >
               Register
@@ -113,6 +138,7 @@ function FormRegister() {
           </div>
         </div>
       </form>
+      {message && <p className="text-center text-red-500 mt-4">{message}</p>}
     </section>
   );
 }

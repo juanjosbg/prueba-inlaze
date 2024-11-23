@@ -76,18 +76,19 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-          <button
-              className="text-gray-400 bg-gray-800  hover:bg-gray-700 px-4 py-2 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              onClick={() => handleModalOpen("login")}
-            >
-              Login
-            </button>
             <button
               className="text-gray-400 bg-gray-800  hover:bg-gray-700 px-4 py-2 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               onClick={() => handleModalOpen("register")}
             >
               Register
             </button>
+            <button
+              className="text-gray-400 bg-gray-800  hover:bg-gray-700 px-4 py-2 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              onClick={() => handleModalOpen("login")}
+            >
+              Login
+            </button>
+
             <button
               type="button"
               className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
