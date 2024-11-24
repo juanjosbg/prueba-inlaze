@@ -2,6 +2,21 @@ import axios from 'axios';
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
+interface Movie {
+  title: string;
+  date: string;
+  rating: number;
+  image: string;
+  description: string;
+}
+interface MovieApiResponse {
+  title: string;
+  release_date: string;
+  vote_average: number;
+  poster_path: string;
+  overview: string;
+}
+
 const apiMovies = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
@@ -20,10 +35,10 @@ apiMovies.interceptors.response.use(
 
 /**
  * Procesar los datos de las películas.
- * @param movies - Lista de películas
+ * @param movies - Lista de películas recibidas de la API
  * @returns Películas procesadas con título, fecha, calificación e imagen
  */
-export const processMovieData = (movies: any[]) => {
+export const processMovieData = (movies: MovieApiResponse[]): Movie[] => {
   return movies.map((movie) => ({
     title: movie.title,
     date: movie.release_date,
@@ -38,7 +53,7 @@ export const processMovieData = (movies: any[]) => {
  * @param genreId - ID del género
  * @returns Lista de películas
  */
-export const fetchMoviesByGenre = async (genreId: number) => {
+export const fetchMoviesByGenre = async (genreId: number): Promise<Movie[]> => {
   try {
     const response = await apiMovies.get('/discover/movie', {
       params: { with_genres: genreId },
@@ -54,7 +69,7 @@ export const fetchMoviesByGenre = async (genreId: number) => {
  * Fetch popular movies.
  * @returns Lista de películas populares
  */
-export const fetchMoviesByPopularity = async () => {
+export const fetchMoviesByPopularity = async (): Promise<Movie[]> => {
   try {
     const response = await apiMovies.get('/discover/movie', {
       params: {
@@ -77,7 +92,7 @@ export const fetchMoviesByPopularity = async () => {
  * @param query - Título de la película
  * @returns Lista de películas por título
  */
-export const fetchMoviesByTitle = async (query: string) => {
+export const fetchMoviesByTitle = async (query: string): Promise<Movie[]> => {
   try {
     const response = await apiMovies.get('/search/movie', {
       params: { query },

@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import {
   Disclosure,
   DisclosureButton,
-  DisclosurePanel,
   Menu,
   MenuButton,
   MenuItem,
   MenuItems,
-} 
-from "@headlessui/react";
-import { Bars3Icon, BellIcon } from "@heroicons/react/24/outline";
+} from "@headlessui/react";
+
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
 import FormRegister from "@/app/components/login/formRegister";
@@ -42,8 +41,8 @@ export default function Navbar() {
   };
 
   const handleLoginSuccess = () => {
-    setIsAuthenticated(true); // Marcar usuario como autenticado
-    handleModalClose(); // Cerrar modal
+    setIsAuthenticated(true); // Mark user as authenticated
+    handleModalClose(); // Close modal
   };
 
   return (
