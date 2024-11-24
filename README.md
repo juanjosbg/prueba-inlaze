@@ -29,6 +29,19 @@ cd movie-slider
 npm install
 ```
 
+# Crear archivo .env, este contiene las variables necesarias para las conexiones API y Firebase
+
+# En windows abre una terminal y ejecuta el siguiente comando:
+copy .env.example .env
+
+# En linux abre una terminal y ejecuta el siguiente comando:
+cp .env.example .env
+
+
+# Esto copiará el archivo `.env.example` y lo renombrará como `.env`.
+# Asegúrate de revisar y completar las variables necesarias dentro del archivo `.env`.
+
+
 ```bash
 # Inicia el servidor de desarrollo
 npm run dev
