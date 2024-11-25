@@ -1,7 +1,7 @@
 export interface MovieSlider {
   id: number;
   title: string;
-  poster_path: string;
+  image: string;
   overview: string;
   release_date: string;
   vote_average: number;

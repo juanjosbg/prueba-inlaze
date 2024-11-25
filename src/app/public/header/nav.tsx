@@ -15,8 +15,8 @@ import FormRegister from "@/app/components/login/formRegister";
 import FormLog from "@/app/components/login/formLog";
 
 const navigation = [
-  { name: "Popular", href: "/projects", current: false },
-  { name: "Favorites", href: "/calendar", current: false },
+  { name: "Popular", href: "#", current: false },
+  { name: "Favorites", href: "#", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -41,8 +41,8 @@ export default function Navbar() {
   };
 
   const handleLoginSuccess = () => {
-    setIsAuthenticated(true); // Mark user as authenticated
-    handleModalClose(); // Close modal
+    setIsAuthenticated(true);
+    handleModalClose();
   };
 
   return (
