@@ -43,8 +43,7 @@ function FormLog({ onLoginSuccess }: { onLoginSuccess: () => void }) {
         setMessage("Inicio de sesión exitoso.");
         console.log("Inicio de sesión exitoso:", userData.fullName);
         onLoginSuccess();
-      } 
-      else {
+      } else {
         setMessage("Contraseña incorrecta.");
       }
     } catch (error) {
@@ -72,10 +71,7 @@ function FormLog({ onLoginSuccess }: { onLoginSuccess: () => void }) {
           />
         </div>
         <div className="mb-6">
-          <label
-            className="block text-gray-500 font-bold mb-2"
-            htmlFor="password"
-          >
+          <label className="block text-gray-500 font-bold mb-2" htmlFor="password">
             Password
           </label>
           <input
