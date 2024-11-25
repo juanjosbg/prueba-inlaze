@@ -41,14 +41,17 @@ npm run dev
 > [!TIP]
 > ### Interfaz
 > Tailwind CSS : Para el estilo
+>
 > React Icons : Para usar los íconos, como los corazones (AiFillHearty AiOutlineHeart).
 >
 > ### Backend
 > Autenticación:
-> Firestore: Base de datos NoSQL en tiempo real
+> Firestore: Base de datos NoSQL en tiempo real.
 >
 > ### Librerías Adicionales
-> Bcrypt.js 
+> Bcrypt.js .
+>
 > React Context o Redux: Para el estado global de inicio de sesión o favoritos.
-> Axios: Para realizar las solicitudes HTTP
+>
+> Axios: Para realizar las solicitudes HTTP.
 >
