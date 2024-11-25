@@ -10,6 +10,7 @@ function FormLog({ onLoginSuccess }: { onLoginSuccess: () => void }) {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -42,21 +43,8 @@ function FormLog({ onLoginSuccess }: { onLoginSuccess: () => void }) {
       if (isPasswordValid) {
         setMessage("Inicio de sesión exitoso.");
         console.log("Inicio de sesión exitoso:", userData.fullName);
+        setIsLoggedIn(true); // Cambiar el estado cuando el usuario inicie sesión
         onLoginSuccess();
-
-        {isLoggedIn && (
-          <button
-            onClick={() => toggleFavorite(movie.title)}
-            className="absolute top-2 right-2 text-xl text-white"
-          >
-            {favorites.includes(movie.title) ? (
-              <AiFillHeart className="text-red-500" />
-            ) : (
-              <AiOutlineHeart />
-            )}
-          </button>
-        )}
-        
       } else {
         setMessage("Contraseña incorrecta.");
       }
@@ -106,6 +94,15 @@ function FormLog({ onLoginSuccess }: { onLoginSuccess: () => void }) {
         </button>
       </form>
       {message && <p className="text-center text-red-500 mt-4">{message}</p>}
+
+      {isLoggedIn && (
+        <button
+          onClick={() => console.log("Favorito agregado")} // Tu lógica de favoritos aquí
+          className="absolute top-2 right-2 text-xl text-white"
+        >
+          ❤
+        </button>
+      )}
     </section>
   );
 }
