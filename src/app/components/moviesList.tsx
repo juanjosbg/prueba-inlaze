@@ -1,14 +1,15 @@
 import CardsMovie from "./cardsMovies";
 import Slider from "./sliderPortMovies";
-import {Movie} from '@/app/types/movieDescription';
-import React, { useState, 
-  useEffect, 
-  useCallback 
+import { Movie } from '@/app/types/movie';
+import React, {
+  useState,
+  useEffect,
+  useCallback
 } from "react";
 
-import { 
-  fetchMoviesByGenre, 
-  fetchMoviesByTitle, 
+import {
+  fetchMoviesByGenre,
+  fetchMoviesByTitle,
   fetchMoviesByPopularity
 } from "@/app/services/movieService";
 
@@ -22,19 +23,19 @@ export default function MoviesList() {
   const [error, setError] = useState<string | null>(null);
 
   const genres = [
-    { name: "All", id: "" },
-    { name: "Adventure", id: "12" },
-    { name: "Animation", id: "16" },
-    { name: "Comedy", id: "35" },
-    { name: "Crime", id: "80" },
-    { name: "Documentary", id: "99" },
-    { name: "Drama", id: "18" },
-    { name: "Family", id: "10751" },
-    { name: "Fantasy", id: "14" },
-    { name: "History", id: "36" },
-    { name: "Horror", id: "27" },
-    { name: "Music", id: "10402" },
-    { name: "Mystery", id: "9648" },
+    { name: "All", id: null },
+    { name: "Adventure", id: 12 },
+    { name: "Animation", id: 16 },
+    { name: "Comedy", id: 35 },
+    { name: "Crime", id: 80 },
+    { name: "Documentary", id: 99 },
+    { name: "Drama", id: 18 },
+    { name: "Family", id: 10751 },
+    { name: "Fantasy", id: 14 },
+    { name: "History", id: 36 },
+    { name: "Horror", id: 27 },
+    { name: "Music", id: 10402 },
+    { name: "Mystery", id: 9648 },
   ];
 
   const fetchMovies = useCallback(async () => {
@@ -43,39 +44,36 @@ export default function MoviesList() {
 
     try {
       let data: Movie[] = [];
-      
+
       if (searchQuery) {
         const moviesFromApi = await fetchMoviesByTitle(searchQuery);
         data = moviesFromApi.map((movie) => ({
-          ...movie,
-          id: movie.id ?? 0,
-          poster_path: movie.poster_path ?? '',
-          genre_ids: movie.genre_ids ?? [],
-          release_date: movie.release_date ?? '',
-          vote_average: movie.vote_average ?? 0,
+          title: movie.title ?? '',
+          date: movie.date ?? '',
+          rating: movie.rating ?? 0,
+          image: movie.image ?? '',
+          description: movie.description ?? '',
         }));
       } else if (selectedGenre !== "All") {
         const genre = genres.find((g) => g.name === selectedGenre);
         if (genre?.id) {
           const moviesFromApi = await fetchMoviesByGenre(genre.id);
           data = moviesFromApi.map((movie) => ({
-            ...movie,
-            id: movie.id ?? 0,
-            poster_path: movie.poster_path ?? '',
-            genre_ids: movie.genre_ids ?? [],
-            release_date: movie.release_date ?? '',
-            vote_average: movie.vote_average ?? 0,
+            title: movie.title ?? '',
+            date: movie.date ?? '',
+            rating: movie.rating ?? 0,
+            image: movie.image ?? '',
+            description: movie.description ?? '',
           }));
         }
       } else {
         const moviesFromApi = await fetchMoviesByPopularity();
         data = moviesFromApi.map((movie) => ({
-          ...movie,
-          id: movie.id ?? 0,
-          poster_path: movie.poster_path ?? '',
-          genre_ids: movie.genre_ids ?? [],
-          release_date: movie.release_date ?? '',
-          vote_average: movie.vote_average ?? 0,
+          title: movie.title ?? '',
+          date: movie.date ?? '',
+          rating: movie.rating ?? 0,
+          image: movie.image ?? '',
+          description: movie.description ?? '',
         }));
       }
 
@@ -122,14 +120,13 @@ export default function MoviesList() {
               <li
                 key={genre.name}
                 onClick={() => {
-                  setSearchQuery(""); // Limpiar búsqueda al cambiar género
+                  setSearchQuery("");
                   setSelectedGenre(genre.name);
                 }}
-                className={`cursor-pointer py-2 px-3 rounded ${
-                  selectedGenre === genre.name
+                className={`cursor-pointer py-2 px-3 rounded ${selectedGenre === genre.name
                     ? "text-white bg-[#444444]"
                     : "text-gray-400 hover:bg-[#181818] hover:text-white"
-                }`}
+                  }`}
               >
                 {genre.name}
               </li>

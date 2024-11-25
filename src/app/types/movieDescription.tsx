@@ -1,14 +1,13 @@
-export interface Movie {
+export interface MovieSlider {
   id: number;
   title: string;
-  overview?: string;
+  poster_path: string;
+  overview: string;
   release_date: string;
   vote_average: number;
-  poster_path: string;
-  genre_ids: number[];
 }
 
-export const MovieDescription = ({ movie }: { movie: Movie }) => {
+export const MovieDescription = ({ movie }: { movie: MovieSlider }) => {
   return (
     <div>
       <h1>{movie.title}</h1>
@@ -17,4 +16,5 @@ export const MovieDescription = ({ movie }: { movie: Movie }) => {
     </div>
   );
 };
+
 
