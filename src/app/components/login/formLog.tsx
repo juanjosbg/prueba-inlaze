@@ -43,6 +43,20 @@ function FormLog({ onLoginSuccess }: { onLoginSuccess: () => void }) {
         setMessage("Inicio de sesión exitoso.");
         console.log("Inicio de sesión exitoso:", userData.fullName);
         onLoginSuccess();
+
+        {isLoggedIn && (
+          <button
+            onClick={() => toggleFavorite(movie.title)}
+            className="absolute top-2 right-2 text-xl text-white"
+          >
+            {favorites.includes(movie.title) ? (
+              <AiFillHeart className="text-red-500" />
+            ) : (
+              <AiOutlineHeart />
+            )}
+          </button>
+        )}
+        
       } else {
         setMessage("Contraseña incorrecta.");
       }
