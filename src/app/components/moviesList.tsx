@@ -86,6 +86,7 @@ export default function MoviesList() {
     }
   }, [searchQuery, selectedGenre]);
 
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchMovies();
